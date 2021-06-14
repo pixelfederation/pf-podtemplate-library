@@ -1,0 +1,14 @@
+name: "jnlp"
+image: "jenkins/inbound-agent:4.6-1"
+imagePullPolicy: "IfNotPresent"
+resources:
+  limits: {}
+  requests:
+    memory: "1024Mi"
+    cpu: "300m"
+tty: true
+volumeMounts:
+- mountPath: "/home/jenkins/agent"
+  name: "workspace-volume"
+  readOnly: false
+workingDir: "/home/jenkins/agent"

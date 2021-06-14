@@ -1,0 +1,21 @@
+apiVersion: "v1"
+kind: "Pod"
+metadata:
+  annotations:
+    cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
+  labels:
+    jenkins: "slave"
+spec:
+  containers:
+nodeSelector:
+  purpose: "jenkins"
+restartPolicy: "Never"
+serviceAccountName: "jenkins-worker"
+tolerations:
+- effect: "NoSchedule"
+  key: "dedicated"
+  value: "jenkins"
+volumes:
+- emptyDir:
+    medium: ""
+  name: "workspace-volume"
