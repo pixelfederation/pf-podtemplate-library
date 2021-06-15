@@ -1,5 +1,5 @@
 #!/usr/bin/env groovy
-@Library("podtemplate@master") _
+@Library("pfPodTemplateLibrary@v0.0.1") _
 
 //override standard param example
 println(getTemplate('jnlp': [:], 'util':[imagePullPolicy: "ifnotpresent"]))
