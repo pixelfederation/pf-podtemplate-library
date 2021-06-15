@@ -20,14 +20,14 @@ String call(Map config = [:]) {
   config.each{String containerName, Map containerParams ->
 
     Map baseResourceFromLibTemplate = utils.getResourceContainer(containerName)
-    
+
     containerParams.each{ String key, def value ->
       switch(key) {
         case "tag":
           baseResourceFromLibTemplate["image"] = baseResourceFromLibTemplate["image"].split(":")[0] + ":" + value
         break
         case "names":
-          value.each{ cname -> 
+          value.each{ cname ->
             clones[cname] = [:]
             clones[cname]["_inherit"] = containerName
           }
