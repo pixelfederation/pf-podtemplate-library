@@ -1,0 +1,29 @@
+#!/usr/bin/env groovy
+@Library("podtemplate@master") _
+
+//override standard param example
+println(getTemplate('jnlp': [:], 'util':[imagePullPolicy: "ifnotpresent"]))
+
+println("==========================")
+//tag will override image tag from template
+println(getTemplate('jnlp': [:], 'util': [tag: "lolo"]))
+
+
+println("==========================")
+//add multiple same containers
+println(getTemplate('jnlp': [:], 'util': [names: ["foo","bar"]]))
+
+
+println("==========================")
+//add multiple same containers with override
+println(getTemplate('jnlp': [:], 'util': [names: ["foo","bar"], resources:[ requests: [memory: '200m']]]))
+
+
+
+podTemplate(yaml: (getTemplate('jnlp': [:], 'util': [names: ["foo","bar"], resources:[ requests: [memory: '200m']]])).stripIndent()) {
+    node(POD_LABEL) {
+      container('util') {
+            sh "echo here;sleep 60"
+      }
+    }
+}

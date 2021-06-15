@@ -1,0 +1,16 @@
+name: "kaniko"
+image: "gcr.io/kaniko-project/executor:debug"
+command:
+- "/busybox/cat"
+imagePullPolicy: "Always"
+resources:
+  limits: {}
+  requests:
+    memory: "256M"
+    cpu: "100m"
+tty: true
+volumeMounts:
+- mountPath: "/home/jenkins/agent"
+  name: "workspace-volume"
+  readOnly: false
+workingDir: "/home/jenkins/agent"

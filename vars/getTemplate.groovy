@@ -7,6 +7,8 @@ import tech.pxfd.Utils
 
 //TODO if provided key not match know template, will crash, allow definitions for unkown containers
 
+//TODO volume mounts options ( with subpath support)
+
 String call(Map config = [:]) {
   def utils = new Utils(this)
   Map podTemplate = utils.getResourcePod('default')
