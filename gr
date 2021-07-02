@@ -1,0 +1,2 @@
+a = [true,true]
+println a.every{ it }

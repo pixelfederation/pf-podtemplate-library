@@ -19,8 +19,29 @@ println("==========================")
 println(getTemplate('jnlp': [:], 'util': [names: ["foo","bar"], resources:[ requests: [memory: '200m']]]))
 
 
+println("===========NORMAL===============")
+//add multiple same containers with override
+println(getTemplate('jnlp': [:], 'util': [names: ["foo","bar"], resources:[ requests: [memory: '665m']]]))
+
+println("===========DOTNOTED===============")
+//add multiple same containers with override
+println(getTemplate('jnlp': [:], 'util': [names: ["foo","bar"], 'resources.requests.memory': '665m', env: ["TOMBO=kombo", "mambo=jAmBo"], vol:[ ['type':'configmap','name': 'my-configmap-name','path' :'/var/log' ] ] ]))
+
+println("==================================")
+//without predefined template
+println(getTemplate('foobar': ['image':'docker.io/dummyimage:v666']))
+
 
 podTemplate(yaml: (getTemplate('jnlp': [:], 'util': [names: ["foo","bar"], resources:[ requests: [memory: '200m']]])).stripIndent()) {
+    node(POD_LABEL) {
+      container('util') {
+            sh "echo here;sleep 60"
+      }
+    }
+}
+
+
+podTemplate(yaml: (getTemplate('jnlp': [:], 'util': [names: ["foo","bar"], envs: ['myenv':'myenvval','mynumber': 3]])).stripIndent()) {
     node(POD_LABEL) {
       container('util') {
             sh "echo here;sleep 60"

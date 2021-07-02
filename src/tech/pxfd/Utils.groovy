@@ -19,8 +19,28 @@ class Utils {
         return new Yaml().load(this.context.libraryResource("pod/${podName}.yaml"))
     }
 
-    Map getResourceContainer(String containerName) {
-        return new Yaml().load(this.context.libraryResource("containers/${containerName}.yaml"))
+    Map getResourceContainer(String containerName, Map containerParams) {
+        Map retval = [:]
+        try {
+            retval =  new Yaml().load(this.context.libraryResource("containers/${containerName}.yaml"))
+        }
+        catch(e) {
+            this.context.println("WARNING Unkown template " + containerName.toString())
+            containerParams['name'] = containerName
+            retval = Utils.mapDeepCopy(containerParams)
+        }
+        return retval
+    }
+
+    public void checkRequiredAttributes(Map template) {
+        List lst = []
+        lst+= template.containsKey('image')
+        return lst.every{ it == true }
+    }
+
+    public void error(String msg){
+            this.context.println("ERROR " + msg)
+            this.context.error()
     }
 
     public static final Map mapDeepCopy(Map originalMap) {
@@ -31,13 +51,15 @@ class Utils {
         m.remove('names')
         m.remove('tag')
         m.remove('_inherit')
+        m.remove('env')
+        m.remove('vol')
         return m
     }
 
-    public static final Map mergeContainers(Map left, Map right) {
+    public static final Map mergeMap(Map left, Map right) {
         return right.inject(left.clone()) { map, entry ->
             if (map[entry.key] instanceof Map && entry.value instanceof Map) {
-                map[entry.key] = this.mergeContainers(map[entry.key], entry.value)
+                map[entry.key] = this.mergeMap(map[entry.key], entry.value)
             } else if (map[entry.key] instanceof Collection && entry.value instanceof Collection) {
                 map[entry.key] += entry.value
             } else {
