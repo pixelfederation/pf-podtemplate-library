@@ -9,6 +9,14 @@ String call(Map config = [:]) {
   return template.render()
 }
 
+String Jnlp(Map config = [:]) {
+  // just define keys, props are from resources/container/{key} templates
+  config['jnlp'] = [:]
+
+  def template = new GetTemplate(this, config)
+  return template.render()
+}
+
 String Util(Map config = [:]) {
   // just define keys, props are from resources/container/{key} templates
   config['jnlp'] = [:]
