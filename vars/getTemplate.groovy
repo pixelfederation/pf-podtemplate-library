@@ -129,7 +129,7 @@ String call(Map config = [:]) {
     containersFinalDef[containerName] =  Utils.mapDeepCopy(cloneDef)
   }
 
-  podTemplate['volumes'].addAll(mergeVolumes)
+  podTemplate['spec']['volumes'].addAll(mergeVolumes)
 
   return Utils.mapToYaml(podTemplate).stripIndent()
 }
