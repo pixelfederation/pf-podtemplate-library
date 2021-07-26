@@ -7,15 +7,14 @@ metadata:
     jenkins: "slave"
 spec:
   containers:
-nodeSelector:
-  purpose: "jenkins"
-restartPolicy: "Never"
-serviceAccountName: "jenkins-worker"
-tolerations:
-- effect: "NoSchedule"
-  key: "dedicated"
-  value: "jenkins"
-volumes:
-- emptyDir:
-    medium: ""
-  name: "workspace-volume"
+  nodeSelector:
+    purpose: "jenkins"
+  restartPolicy: "Never"
+  serviceAccountName: "jenkins-worker"
+  tolerations:
+  - effect: "NoSchedule"
+    key: "dedicated"
+    value: "jenkins"
+  volumes:
+  - emptyDir: {}
+    name: "workspace-volume"
