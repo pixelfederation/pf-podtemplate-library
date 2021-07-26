@@ -13,4 +13,6 @@ volumeMounts:
 - mountPath: "/home/jenkins/agent"
   name: "workspace-volume"
   readOnly: false
+- mountPath: /kaniko/.docker/
+  name: kaniko-ecr-helper-config
 workingDir: "/home/jenkins/agent"

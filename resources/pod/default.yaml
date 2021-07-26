@@ -18,3 +18,7 @@ spec:
   volumes:
   - emptyDir: {}
     name: "workspace-volume"
+  - configMap:
+      name: kaniko-ecr-helper-config
+      optional: true
+    name: kaniko-ecr-helper-config

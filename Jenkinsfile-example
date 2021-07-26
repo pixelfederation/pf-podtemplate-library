@@ -1,5 +1,5 @@
 #!/usr/bin/env groovy
-@Library("pfPodTemplateLibrary@v0.0.1") _
+@Library("pfPodTemplateLibrary@v0.1.4") _
 
 //override standard param example
 println(getTemplate('jnlp': [:], 'util':[imagePullPolicy: "ifnotpresent"]))
@@ -32,7 +32,7 @@ println("==================================")
 println(getTemplate('foobar': ['image':'docker.io/dummyimage:v666']))
 
 
-podTemplate(yaml: (getTemplate('jnlp': [:], 'util': [names: ["foo","bar"], resources:[ requests: [memory: '200m']]])).stripIndent()) {
+podTemplate(yaml: getTemplate('jnlp': [:], 'util': [names: ["foo","bar"], resources:[ requests: [memory: '200m']]]) {
     node(POD_LABEL) {
       container('util') {
             sh "echo here;sleep 60"
@@ -41,10 +41,83 @@ podTemplate(yaml: (getTemplate('jnlp': [:], 'util': [names: ["foo","bar"], resou
 }
 
 
-podTemplate(yaml: (getTemplate('jnlp': [:], 'util': [names: ["foo","bar"], envs: ['myenv':'myenvval','mynumber': 3]])).stripIndent()) {
+podTemplate(yaml: getTemplate('jnlp': [:], 'util': [names: ["foo","bar"], envs: ['myenv':'myenvval','mynumber': 3]]) {
     node(POD_LABEL) {
       container('util') {
             sh "echo here;sleep 60"
       }
     }
+}
+
+// REAL WORLD EXAMPLE with 2x kaniko containers, exmaple volume mount for kaniko
+// we will refer to multiple kaniko conatiner by name eg:
+//
+// pfDocker.getKanikoJobDef(
+//   runInContainer: 'k1'
+//   ...
+//   )
+// and
+// pfDocker.getKanikoJobDef(
+//   runInContainer: 'k2'
+//   ...
+//   )
+String podTemplateName = "my-exmaple-ci"
+String podTemplateIdleMinutes = "10"
+String podTemplateYaml = getTemplate('jnlp': [:], 'util': [:], 'kaniko': [names: ["k1", "k2"],
+    vol: [[type: 'configmap', name: 'kaniko-ecr-helper-config', path: '/kaniko/.docker/']]])
+
+Map podTemplateConf = [ name: "${podTemplateName}", idleMinutes: "${podTemplateIdleMinutes}", slaveConnectTimeout: 100, instanceCap: 1, yaml: podTemplateYaml ]
+
+podTemplate( podTemplateConf ) {
+  node( POD_LABEL ) {
+  }
+}
+
+// SHORTHAND usage just `util` container
+podTemplateName = "my-shorthand-exmaple-ci"
+podTemplateIdleMinutes = "5"
+podTemplateYaml = getTemplate.Util()
+
+podTemplateConf = [ name: "${podTemplateName}", idleMinutes: "${podTemplateIdleMinutes}", slaveConnectTimeout: 100, instanceCap: 1, yaml: podTemplateYaml ]
+
+podTemplate( podTemplateConf ) {
+  node( POD_LABEL ) {
+  }
+}
+
+// SHORTHAND usage util and kaniko container
+podTemplateName = "my-shorthand-exmaple-2-ci"
+podTemplateIdleMinutes = "5"
+podTemplateYaml = getTemplate.UtilKaniko()
+
+podTemplateConf = [ name: "${podTemplateName}", idleMinutes: "${podTemplateIdleMinutes}", slaveConnectTimeout: 100, instanceCap: 1, yaml: podTemplateYaml ]
+
+podTemplate( podTemplateConf ) {
+  node( POD_LABEL ) {
+  }
+}
+
+// SHORTHAND for util-kaniko-php pod, php template has default image `php-fpm:7.4.16-buster-build"` so you can use getTemplate.UtilKanikoPhp()
+// preferably you want to specify php image, so stick with getTemplate.Util() or getTemplate.UtilKaniko() and define your override for php template as in example
+podTemplateName = "my-shorthand-exmaple-2-ci"
+podTemplateIdleMinutes = "5"
+podTemplateYaml = getTemplate.UtilKaniko('php':[image: "266775278674.dkr.ecr.eu-west-1.amazonaws.com/php-fpm:7.4.16-buster-build"])
+
+podTemplateConf = [ name: "${podTemplateName}", idleMinutes: "${podTemplateIdleMinutes}", slaveConnectTimeout: 100, instanceCap: 1, yaml: podTemplateYaml ]
+
+podTemplate( podTemplateConf ) {
+  node( POD_LABEL ) {
+  }
+}
+
+// SHORTHAND for util-4xkaniko-php pod
+podTemplateName = "my-shorthand-exmaple-2-ci"
+podTemplateIdleMinutes = "5"
+podTemplateYaml = getTemplate.Util('php':[image: "266775278674.dkr.ecr.eu-west-1.amazonaws.com/php-fpm:7.4.16-buster-build"], 'kaniko': [names: ["ka0", "ka1", "ka2", "ka3"]])
+
+podTemplateConf = [ name: "${podTemplateName}", idleMinutes: "${podTemplateIdleMinutes}", slaveConnectTimeout: 100, instanceCap: 1, yaml: podTemplateYaml ]
+
+podTemplate( podTemplateConf ) {
+  node( POD_LABEL ) {
+  }
 }
