@@ -110,10 +110,22 @@ podTemplate( podTemplateConf ) {
   }
 }
 
+//OR shorter variant with overriding just php template tag
+podTemplateName = "my-shorthand-exmaple-2-tag-ci"
+podTemplateIdleMinutes = "5"
+podTemplateYaml = getTemplate.UtilKaniko('php':[tag: "php-fpm:7.4.16-buster-build"])
+
+podTemplateConf = [ name: "${podTemplateName}", idleMinutes: "${podTemplateIdleMinutes}", slaveConnectTimeout: 100, instanceCap: 1, yaml: podTemplateYaml ]
+
+podTemplate( podTemplateConf ) {
+  node( POD_LABEL ) {
+  }
+}
+
 // SHORTHAND for util-4xkaniko-php pod
 podTemplateName = "my-shorthand-exmaple-2-ci"
 podTemplateIdleMinutes = "5"
-podTemplateYaml = getTemplate.Util('php':[image: "266775278674.dkr.ecr.eu-west-1.amazonaws.com/php-fpm:7.4.16-buster-build"], 'kaniko': [names: ["ka0", "ka1", "ka2", "ka3"]])
+podTemplateYaml = getTemplate.Util('php':[tag: "php-fpm:7.4.16-buster-build"], 'kaniko': [names: ["ka0", "ka1", "ka2", "ka3"]])
 
 podTemplateConf = [ name: "${podTemplateName}", idleMinutes: "${podTemplateIdleMinutes}", slaveConnectTimeout: 100, instanceCap: 1, yaml: podTemplateYaml ]
 
