@@ -4,6 +4,8 @@ import tech.pxfd.GetTemplate
 
 //TODO if provided key not match know template, will crash, allow definitions for unkown containers
 
+//TODO switch this.context.echo to Utils.echo
+
 String call(Map config = [:]) {
   def template = new GetTemplate(this, config)
   return template.render()
