@@ -27,8 +27,10 @@ class GetTemplate {
 
     List mergeVolumes = []
 
-    this.config.each{String containerName, Map containerParams ->
+    List uniqueNamesVolumes = [] //  per whole pod
 
+    this.config.each{String containerName, Map containerParams ->
+        List uniqueNamesMounts = [] // per container
         Map newParams = [:]
         containerParams.each{ String key, def value ->
         if ( key.contains(".") ) { //or check if its not Map or not a List
@@ -51,72 +53,86 @@ class GetTemplate {
         }
 
         containerParams.each{ String key, def value ->
-        switch(key) {
-            case "tag":
-            baseResourceFromLibTemplate["image"] = baseResourceFromLibTemplate["image"].split(":")[0] + ":" + value
-            break
-            case "names":
-            value.each{ String cname ->
-                clones[cname] = [:]
-                clones[cname]["_inherit"] = containerName
-            }
-            break
-            case "env":
-            value.each { String envMixKeyVar ->
-                if ( ! envMixKeyVar.contains("=") ) {
-                println("WARNING ignored env ${envMixKeyVar} missing `=` should be key=value")
-                continue
+            switch(key) {
+                case "tag":
+                baseResourceFromLibTemplate["image"] = baseResourceFromLibTemplate["image"].split(":")[0] + ":" + value
+                break
+                case "names":
+                value.each{ String cname ->
+                    clones[cname] = [:]
+                    clones[cname]["_inherit"] = containerName
                 }
-                List envMixKeyVarList = envMixKeyVar.split("=")
-                envs += ['name': envMixKeyVarList[0].toString().toUpperCase(), 'value': envMixKeyVarList[1].toString()]
-            }
-            containerParams.remove("env")
-            break
-            case "vol":
-            value.each { Map volumeDefObj ->
-                Map volMount = [:]
-                Map volume = [:]
-                // ['name': 'log-pv', 'type': 'pvc', 'path' : '/var/log']
-                if (volumeDefObj.containsKey('configMapName')) {
-                    println("WARNING use `name` instead of configMapName")
-                    volumeDefObj['name'] = volumeDefObj['configMapName']
+                break
+                case "env":
+                value.each { String envMixKeyVar ->
+                    if ( ! envMixKeyVar.contains("=") ) {
+                    this.context.echo("WARNING ignored env ${envMixKeyVar} missing `=` should be key=value")
+                    continue
+                    }
+                    List envMixKeyVarList = envMixKeyVar.split("=")
+                    envs += ['name': envMixKeyVarList[0].toString().toUpperCase(), 'value': envMixKeyVarList[1].toString()]
                 }
-                if (volumeDefObj.containsKey('claimName')) {
-                    println("WARNING use `name` instead of claimName")
-                    volumeDefObj['name'] = volumeDefObj['claimName']
-                }
-                if ( volumeDefObj['type'] == "host" && ! volumeDefObj.containsKey('hostPath') ) {
-                    utils.error("volume type host - hostPath not provided")
-                }
+                containerParams.remove("env")
+                break
+                case "vol":
+                value.each { Map volumeDefObj ->
+                    Map volMount = [:]
+                    Map volume = [:]
+                    // ['name': 'log-pv', 'type': 'pvc', 'path' : '/var/log']
+                    if (volumeDefObj.containsKey('configMapName')) {
+                        this.context.echo("WARNING use `name` instead of configMapName")
+                        volumeDefObj['name'] = volumeDefObj['configMapName']
+                    }
+                    if (volumeDefObj.containsKey('claimName')) {
+                        this.context.echo("WARNING use `name` instead of claimName")
+                        volumeDefObj['name'] = volumeDefObj['claimName']
+                    }
+                    if ( volumeDefObj['type'] == "host" && ! volumeDefObj.containsKey('hostPath') ) {
+                        utils.error("volume type host - hostPath not provided")
+                    }
 
-                switch(volumeDefObj['type']) {
-                    case "configmap":
-                    volume = ['configMap':['name': volumeDefObj['name'] ]]
-                    //TODO options: item keys
-                    break
-                    case "pvc":
-                    volume = ['persistentVolumeClaim': ['claimName': volumeDefObj['name'] ]]
-                    break
-                    case "host":
-                    volume = ['hostPath':['path': volumeDefObj['hostPath'] ]]
-                    break
-                    case "empty":
-                    volume = ['emptyDir': [:]]
-                    break
-                    case "secret":
-                    //TODO
-                    break
-                }
+                    switch(volumeDefObj['type']) {
+                        case "configmap":
+                        volume = ['configMap':['name': volumeDefObj['name'] ]]
+                        //TODO options: item keys
+                        break
+                        case "pvc":
+                        volume = ['persistentVolumeClaim': ['claimName': volumeDefObj['name'] ]]
+                        break
+                        case "host":
+                        volume = ['hostPath':['path': volumeDefObj['hostPath'] ]]
+                        break
+                        case "empty":
+                        volume = ['emptyDir': [:]]
+                        break
+                        case "secret":
+                        //TODO
+                        break
+                    }
 
-                volume['name'] = volumeDefObj['name']
-                volMount['name'] = volumeDefObj['name']  //configMapName, claimName
-                volMount['mountPath'] = volumeDefObj['path']
-                mergeVolumes += Utils.mapDeepCopy(volume)
-                mergeVolumesMounts += Utils.mapDeepCopy(volMount)
+                    volume['name'] = volumeDefObj['name']
+                    volMount['name'] = volumeDefObj['name']  //configMapName, claimName
+                    volMount['mountPath'] = volumeDefObj['path']
+                    // for pvc etc
+                    if ( volumeDefObj.containsKey('readOnly') ) {
+                        volMount['readOnly'] = volumeDefObj['readOnly']
+                    }
+                    // for configmap
+                    if ( volumeDefObj.containsKey('optional') ) {
+                        volMount['optional'] = volumeDefObj['optional']
+                    }
+                    if ( !uniqueNamesVolumes.contains(volume['name']) ) {
+                        mergeVolumes += Utils.mapDeepCopy(volume)
+                        uniqueNamesVolumes.add(volume['name'])
+                    }
+                    if ( !uniqueNamesMounts.contains(volMount['mountPath']) ) {
+                        mergeVolumesMounts += Utils.mapDeepCopy(volMount)
+                        uniqueNamesMounts.add(volMount['mountPath'])
+                    }
+                }
+                containerParams.remove("vol")
+                break
             }
-            containerParams.remove("vol")
-            break
-        }
         }
 
         Map paramsToMerge = Utils.removeUnmergable(containerParams)
