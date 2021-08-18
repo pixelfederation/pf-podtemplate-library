@@ -1,5 +1,7 @@
 #!/usr/bin/env groovy
-@Library("pfPodTemplateLibrary@v0.1.4") _
+//@Library("pfPodTemplateLibrary@v0.1.4") _
+// we want both liberies in global namespace
+@Library(["pfJenkinsLibrary@0.19.1", "pfPodTemplateLibrary@v0.1.7"]) _
 
 //override standard param example
 println(getTemplate('jnlp': [:], 'util':[imagePullPolicy: "ifnotpresent"]))
