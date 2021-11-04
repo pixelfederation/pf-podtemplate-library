@@ -90,6 +90,9 @@ class GetTemplate {
                     if ( volumeDefObj['type'] == "host" && ! volumeDefObj.containsKey('hostPath') ) {
                         utils.error("volume type host - hostPath not provided")
                     }
+                    if ( volumeDefObj['type'] == "nfs" && ! volumeDefObj.containsKey('server') ) {
+                        utils.error("volume type nfs - server not provided, eg 'efs.wtf.pxfd.tech:/'")
+                    }
 
                     switch(volumeDefObj['type']) {
                         case "configmap":
@@ -98,6 +101,9 @@ class GetTemplate {
                         break
                         case "pvc":
                         volume = ['persistentVolumeClaim': ['claimName': volumeDefObj['name'] ]]
+                        break
+                        case "nfs":
+                        volume = ['nfs': ['server': volumeDefObj['server'].split(":")[0], 'path': volumeDefObj['server'].split(":")[1] ]]
                         break
                         case "host":
                         volume = ['hostPath':['path': volumeDefObj['hostPath'] ]]
