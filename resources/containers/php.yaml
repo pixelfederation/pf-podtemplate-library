@@ -16,7 +16,7 @@ volumeMounts:
   readOnly: false
 workingDir: "/home/jenkins/agent"
 startupProbe:
-  initialDelaySeconds: 10
+  initialDelaySeconds: 60
   periodSeconds: 5
   timeoutSeconds: 2
   successThreshold: 1
