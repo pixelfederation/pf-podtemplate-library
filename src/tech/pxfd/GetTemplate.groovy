@@ -65,12 +65,12 @@ class GetTemplate {
                 break
                 case "env":
                 value.each { String envMixKeyVar ->
-                    if ( ! envMixKeyVar.contains("=") ) {
-                    this.context.echo("WARNING ignored env ${envMixKeyVar} missing `=` should be key=value")
-                    continue
+                    if ( envMixKeyVar.contains("=") ) {
+                        List envMixKeyVarList = envMixKeyVar.split("=")
+                        envs += ['name': envMixKeyVarList[0].toString().toUpperCase(), 'value': envMixKeyVarList[1].toString()]
+                    } else {
+                        this.context.echo("WARNING ignored env ${envMixKeyVar} missing `=` should be key=value")
                     }
-                    List envMixKeyVarList = envMixKeyVar.split("=")
-                    envs += ['name': envMixKeyVarList[0].toString().toUpperCase(), 'value': envMixKeyVarList[1].toString()]
                 }
                 containerParams.remove("env")
                 break
