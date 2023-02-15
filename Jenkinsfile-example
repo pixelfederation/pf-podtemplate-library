@@ -87,6 +87,31 @@ podTemplate( podTemplateConf ) {
   }
 }
 
+// SHORTHAND usage util and builx container
+podTemplateName = "my-shorthand-exmaple-2-ci"
+podTemplateIdleMinutes = "5"
+podTemplateYaml = getTemplate.UtilBuildx()
+
+podTemplateConf = [ name: "${podTemplateName}", idleMinutes: "${podTemplateIdleMinutes}", slaveConnectTimeout: 100, instanceCap: 1, yaml: podTemplateYaml ]
+
+podTemplate( podTemplateConf ) {
+  node( POD_LABEL ) {
+  }
+}
+
+// SHORTHAND usage util and builx and php container
+podTemplateName = "my-shorthand-exmaple-2-ci"
+podTemplateIdleMinutes = "5"
+podTemplateYaml = getTemplate.UtilBuildxPhp()
+
+podTemplateConf = [ name: "${podTemplateName}", idleMinutes: "${podTemplateIdleMinutes}", slaveConnectTimeout: 100, instanceCap: 1, yaml: podTemplateYaml ]
+
+podTemplate( podTemplateConf ) {
+  node( POD_LABEL ) {
+  }
+}
+
+
 // SHORTHAND usage util and kaniko container
 podTemplateName = "my-shorthand-exmaple-2-ci"
 podTemplateIdleMinutes = "5"

@@ -52,3 +52,24 @@ String UtilKanikoPhp(Map config = [:]) {
   def template = new GetTemplate(this, config)
   return template.render()
 }
+
+String UtilBuildx(Map config = [:]) {
+  // just define keys, props are from resources/container/{key} templates
+  config['jnlp'] = [:]
+  config['util'] = [:]
+  config['buildx'] = [:]
+
+  def template = new GetTemplate(this, config)
+  return template.render()
+}
+
+String UtilBuildxPhp(Map config = [:]) {
+  // just define keys, props are from resources/container/{key} templates
+  config['jnlp'] = [:]
+  config['util'] = [:]
+  config['buildx'] = [:]
+  config['php'] = [:]
+
+  def template = new GetTemplate(this, config)
+  return template.render()
+}
