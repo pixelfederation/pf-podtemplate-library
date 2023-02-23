@@ -1,0 +1,15 @@
+name: newman
+image: postman/newman_alpine33
+imagePullPolicy: Always
+command:
+- /bin/cat
+resources:
+  limits: {}
+  requests:
+    memory: 256M
+tty: true
+volumeMounts:
+- mountPath: /home/jenkins/agent
+  name: workspace-volume
+  readOnly: false
+workingDir: /home/jenkins/agent
