@@ -15,3 +15,10 @@ volumeMounts:
   name: "workspace-volume"
   readOnly: false
 workingDir: "/home/jenkins/agent"
+startupProbe:
+  failureThreshold: 20
+  periodSeconds: 5
+  exec:
+    command:
+    - cat
+    - /root/.composer/auth.json
