@@ -1,5 +1,5 @@
 name: "php"
-image: "266775278674.dkr.ecr.eu-west-1.amazonaws.com/php-fpm:7.4.16-buster-build"
+image: "docker-registry.pxfd.tech/php-fpm:7.4.30-fpm-buster_8-build-node16"
 env:
 - name: "VAULT_ADDR"
   value: "https://vault.kube.shared.pxfd.tech"
