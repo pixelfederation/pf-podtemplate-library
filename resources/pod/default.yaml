@@ -8,7 +8,7 @@ metadata:
 spec:
   containers:
   nodeSelector:
-    purpose: "jenkins"
+    dedicated: "jenkins"
   restartPolicy: "Never"
   serviceAccountName: "jenkins-worker"
   tolerations:

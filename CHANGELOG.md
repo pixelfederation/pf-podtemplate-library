@@ -1,4 +1,9 @@
 # Changelog
+
+## [v0.4.1 - 2023-03-22]
+## Change
+- change default nodeSelector
+
 ## [v0.4.0 - 2023-03-01]
 ## Change
 - added startup probes for util and php
