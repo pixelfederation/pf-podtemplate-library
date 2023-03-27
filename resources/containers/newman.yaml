@@ -1,6 +1,6 @@
 name: newman
 image: postman/newman_alpine33
-imagePullPolicy: Always
+imagePullPolicy: IfNotPresent
 command:
 - /bin/cat
 resources:

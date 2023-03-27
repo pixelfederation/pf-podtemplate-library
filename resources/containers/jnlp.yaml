@@ -1,6 +1,6 @@
-name: "jnlp"
-image: "jenkins/inbound-agent:4.11-1"
-imagePullPolicy: "IfNotPresent"
+name: jnlp
+image: jenkins/inbound-agent:4.11-1
+imagePullPolicy: IfNotPresent
 resources:
   limits: {}
   requests:

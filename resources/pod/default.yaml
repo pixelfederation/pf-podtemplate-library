@@ -6,7 +6,7 @@ metadata:
   labels:
     jenkins: "slave"
 spec:
-  containers:
+  containers: []
   nodeSelector:
     dedicated: "jenkins"
   restartPolicy: "Never"
