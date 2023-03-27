@@ -1,7 +1,19 @@
 dependencies:
 org.yaml:snakeyaml:1.29
+```
+// HOW TO OVERRIDE POD TEMPLATE WITH DOTT NOTATION
+podTemplateYaml = getTemplate.Util([:], ['spec.nodeSelector.foo': 'bar' ])
 
+//HOW TO OVERRIDE POD TEMPLATE WITH DOTT NOTATION AND DELETE EXISTING WITH NULL
+getTemplate.UtilBuildxPhp([:], ['spec.nodeSelector.dedicated' : null , 'spec.nodeSelector.foo': 'bar' ])
 
-println(getTemplate('jnlp': [:], 'util': 'resources.requests.memory': '665m', env: ["TOMBO=kombo", "mambo=jAmBo"], vol:[ ['type':'configmap','name': 'my-configmap-name','path' :'/var/log' ] ] ]))
+//HOW TO OVERRIDE POD TEMPLATE WITH MULTIPLE KEYS
+getTemplate.UtilBuildxPhp([:], ['spec.nodeSelector.foo' : 'bar' , 'spec.serviceAccountName': 'test' ])
+
+//HOW TO OVERRIDE POD TEMPLATE WITH MAP
+getTemplate.UtilBuildxPhp([:], ['spec': ['nodeSelector': ['foo' : 'bar'] , 'serviceAccountName': 'test' ]])
+
+//HOW TO OVERRIDE POD TEMPLATE WITH MAP AND DELETE KEY
+getTemplate.UtilBuildxPhp([:], ['spec': ['nodeSelector': ['foo' : 'bar', 'dedicated': null] , 'serviceAccountName': 'test' ]])
 
 ```
