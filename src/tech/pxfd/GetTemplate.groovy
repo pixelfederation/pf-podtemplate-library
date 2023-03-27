@@ -6,12 +6,17 @@ import tech.pxfd.Utils
 
 class GetTemplate {
   
-  private Map config
+  private Map conatinersConf
+  private Map podConf
   private context
 
-  GetTemplate(def context, Map config) {
-        this.config = config
-        this.context = context
+// use def for both, check if conatinersConf just name or Map, same for podConf, allow multiple pod templates
+
+  GetTemplate(def context, Map conatinersConf, Map podConf) {
+    this.context = context
+
+    this.conatinersConf = conatinersConf
+    this.podConf = podConf
   }
 
   String render() {
@@ -29,27 +34,33 @@ class GetTemplate {
 
     List uniqueNamesVolumes = [] //  per whole pod
 
-    this.config.each{String containerName, Map containerParams ->
+    this.podConf.each { String podParamKey, def podParamValue ->
+        if ( podParamKey.contains(".") ) {
+            Map newPodParams = Utils.parseDots(podParamKey, podParamValue)
+            this.podConf.remove(podParamKey)
+            podTemplate = Utils.mergeMap(podTemplate, Utils.mapDeepCopy(newPodParams))
+        }
+    }
+
+    podTemplate = Utils.mergeMap(podTemplate, this.podConf)
+
+    this.conatinersConf.each{String containerName, Map containerParams ->
         List uniqueNamesMounts = [] // per container
         Map newParams = [:]
         containerParams.each{ String key, def value ->
-        if ( key.contains(".") ) { //or check if its not Map or not a List
-            Map tmpPropMap = [:]
-            tmpPropMap[key] = value
-            def tmpProps = new Properties()
-            tmpProps.putAll(tmpPropMap)
-            newParams = Utils.mergeMap(newParams, new ConfigSlurper().parse(tmpProps))
-            containerParams.remove("key")
+            if ( key.contains(".") ) { //or check if its not Map or not a List
+                newParams = Utils.parseDots(key, value)
+                containerParams.remove(key)
+                containerParams = Utils.mergeMap(containerParams, newParams)
+            }
         }
-        }
-        containerParams = Utils.mergeMap(containerParams, newParams)
 
         List mergeVolumesMounts = []
         List envs = []
         Map baseResourceFromLibTemplate = utils.getResourceContainer(containerName, containerParams)
 
         if ( ! utils.checkRequiredAttributes(baseResourceFromLibTemplate) ) {
-        utils.error("Missing required arguments for template, eg. `image`")
+            utils.error("Missing required arguments for template, eg. `image` , template: ${baseResourceFromLibTemplate.toString()}")
         }
 
         containerParams.each{ String key, def value ->
@@ -156,10 +167,13 @@ class GetTemplate {
     }
 
     clones.each{String containerName, Map containerParams ->
-        Map cloneDef = Utils.mapDeepCopy(containersFinalDef[containerParams["_inherit"]])
+        String name = containerParams["_inherit"]
+        Map cloneDef = Utils.mapDeepCopy(containersFinalDef[name])
         cloneDef["name"] = containerName
+        cloneDef = Utils.removeUnmergable(cloneDef)
         podTemplate['spec']['containers'] +=  Utils.mapDeepCopy(cloneDef)
         containersFinalDef[containerName] =  Utils.mapDeepCopy(cloneDef)
+        podTemplate['spec']['containers'] = podTemplate['spec']['containers'].findAll { it.name != name }
     }
 
     podTemplate['spec']['volumes'].addAll(mergeVolumes)

@@ -1,8 +1,8 @@
-name: "kaniko"
-image: "gcr.io/kaniko-project/executor:debug"
+name: kaniko
+image: gcr.io/kaniko-project/executor:debug
 command:
 - "/busybox/cat"
-imagePullPolicy: "Always"
+imagePullPolicy: IfNotPresent
 resources:
   limits: {}
   requests:

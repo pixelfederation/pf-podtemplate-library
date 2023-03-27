@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.5.0 - 2023-03-27]
+- add Pod override
+- add default container template
+
 ## [v0.4.1 - 2023-03-22]
 ## Change
 - change default nodeSelector

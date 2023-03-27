@@ -20,16 +20,17 @@ class Utils {
     }
 
     Map getResourceContainer(String containerName, Map containerParams) {
-        Map retval = [:]
+        Map containerTemplate = [:]
         try {
-            retval =  new Yaml().load(this.context.libraryResource("containers/${containerName}.yaml"))
+            containerTemplate =  new Yaml().load(this.context.libraryResource("containers/${containerName}.yaml"))
         }
-        catch(e) {
-            this.context.println("WARNING Unkown template " + containerName.toString())
-            containerParams['name'] = containerName
-            retval = Utils.mapDeepCopy(containerParams)
+        catch(hudson.AbortException e) {
+            this.context.println("INFO Unkown template `${containerName.toString()}`, using container _default.yaml template")
+            containerTemplate =  new Yaml().load(this.context.libraryResource("containers/_default.yaml"))
         }
-        return retval
+        containerTemplate = Utils.mergeMap(containerTemplate, containerParams)
+        containerTemplate['name'] = containerName
+        return containerTemplate
     }
 
     public void checkRequiredAttributes(Map template) {
@@ -39,8 +40,7 @@ class Utils {
     }
 
     public void error(String msg){
-            this.context.println("ERROR " + msg)
-            this.context.error()
+            this.context.error("ERROR " + msg)
     }
 
     public static final Map mapDeepCopy(Map originalMap) {
@@ -63,7 +63,11 @@ class Utils {
             } else if (map[entry.key] instanceof Collection && entry.value instanceof Collection) {
                 map[entry.key] += entry.value
             } else {
-                map[entry.key] = entry.value
+                if (entry.value != null && entry.value != GlobalVars.deleteValueString) {
+                    map[entry.key] = entry.value
+                } else {
+                    map.remove(entry.key)
+                }
             }
             return map
         }
@@ -72,9 +76,20 @@ class Utils {
     public static final String mapToYaml(Map m) {
         return new Yaml().dump(m)
     }
+
+    public static final Map parseDots(String dotKey, def value) {
+        Map tmpPropMap = [:]
+        value = value ? value : GlobalVars.deleteValueString
+        tmpPropMap[dotKey] = value
+        def tmpProps = new Properties()
+        tmpProps.putAll(tmpPropMap)
+        return (new ConfigSlurper().parse(tmpProps))
+    }
 }
 
 /*
+TODO allow templates from other repository
+
 import jenkins.plugins.git.GitSCMSource;
 modernSCM(
     [

@@ -1,8 +1,7 @@
 dependencies:
 org.yaml:snakeyaml:1.29
 
-TODO:
-we need something like this, but you cannot pass two named parameters `kaniko` with same name
-```groovy
-getTemplate.Util('kaniko': [names: ["kaniko-php"], 'resources.requests.memory': '2000m'],'kaniko': [names: [kaniko-nginx], 'resources.requests.memory': '100m' ])
+
+println(getTemplate('jnlp': [:], 'util': 'resources.requests.memory': '665m', env: ["TOMBO=kombo", "mambo=jAmBo"], vol:[ ['type':'configmap','name': 'my-configmap-name','path' :'/var/log' ] ] ]))
+
 ```

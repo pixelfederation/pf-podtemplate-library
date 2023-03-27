@@ -6,70 +6,70 @@ import tech.pxfd.GetTemplate
 
 //TODO switch this.context.echo to Utils.echo
 
-String call(Map config = [:]) {
-  def template = new GetTemplate(this, config)
+String call(Map conatinersConf = [:], Map podConf = [:]) {
+  def template = new GetTemplate(this, conatinersConf, podConf)
   return template.render()
 }
 
-String Jnlp(Map config = [:]) {
+String Jnlp(Map conatinersConf = [:], Map podConf = [:]) {
   // just define keys, props are from resources/container/{key} templates
-  config['jnlp'] = [:]
+  conatinersConf['jnlp'] = [:]
 
-  def template = new GetTemplate(this, config)
+  def template = new GetTemplate(this, conatinersConf, podConf)
   return template.render()
 }
 
-String Util(Map config = [:]) {
+String Util(Map conatinersConf = [:], Map podConf = [:]) {
   // just define keys, props are from resources/container/{key} templates
-  config['jnlp'] = [:]
-  config['util'] = [:]
+  conatinersConf['jnlp'] = [:]
+  conatinersConf['util'] = [:]
 
-  def template = new GetTemplate(this, config)
+  def template = new GetTemplate(this, conatinersConf, podConf)
   return template.render()
 }
 
-String UtilKaniko(Map config = [:]) {
+String UtilKaniko(Map conatinersConf = [:], Map podConf = [:]) {
   // just define keys, props are from resources/container/{key} templates
-  config['jnlp'] = [:]
-  config['util'] = [:]
+  conatinersConf['jnlp'] = [:]
+  conatinersConf['util'] = [:]
   // for ecr helper, we have optional configmap defined on pod template
   // if configmap not present, empty mount path will be created on kaniko container - /kaniko/.docker
-  config['kaniko'] = [:]
+  conatinersConf['kaniko'] = [:]
 
-  def template = new GetTemplate(this, config)
+  def template = new GetTemplate(this, conatinersConf, podConf)
   return template.render()
 }
 
-String UtilKanikoPhp(Map config = [:]) {
+String UtilKanikoPhp(Map conatinersConf = [:], Map podConf = [:]) {
   // just define keys, props are from resources/container/{key} templates
-  config['jnlp'] = [:]
-  config['util'] = [:]
+  conatinersConf['jnlp'] = [:]
+  conatinersConf['util'] = [:]
   // for ecr helper, we have optional configmap defined on pod template
   // if configmap not present, empty mount path will be created on kaniko container - /kaniko/.docker
-  config['kaniko'] = [:]
-  config['php'] = [:]
+  conatinersConf['kaniko'] = [:]
+  conatinersConf['php'] = [:]
 
-  def template = new GetTemplate(this, config)
+  def template = new GetTemplate(this, conatinersConf, podConf)
   return template.render()
 }
 
-String UtilBuildx(Map config = [:]) {
+String UtilBuildx(Map conatinersConf = [:], Map podConf = [:]) {
   // just define keys, props are from resources/container/{key} templates
-  config['jnlp'] = [:]
-  config['util'] = [:]
-  config['buildx'] = [:]
+  conatinersConf['jnlp'] = [:]
+  conatinersConf['util'] = [:]
+  conatinersConf['buildx'] = [:]
 
-  def template = new GetTemplate(this, config)
+  def template = new GetTemplate(this, conatinersConf, podConf)
   return template.render()
 }
 
-String UtilBuildxPhp(Map config = [:]) {
+String UtilBuildxPhp(Map conatinersConf = [:], Map podConf = [:]) {
   // just define keys, props are from resources/container/{key} templates
-  config['jnlp'] = [:]
-  config['util'] = [:]
-  config['buildx'] = [:]
-  config['php'] = [:]
+  conatinersConf['jnlp'] = [:]
+  conatinersConf['util'] = [:]
+  conatinersConf['buildx'] = [:]
+  conatinersConf['php'] = [:]
 
-  def template = new GetTemplate(this, config)
+  def template = new GetTemplate(this, conatinersConf, podConf)
   return template.render()
 }
