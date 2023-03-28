@@ -28,7 +28,6 @@ class Utils {
             this.context.println("INFO Unkown template `${containerName.toString()}`, using container _default.yaml template")
             containerTemplate =  new Yaml().load(this.context.libraryResource("containers/_default.yaml"))
         }
-        containerTemplate = Utils.mergeMap(containerTemplate, containerParams)
         containerTemplate['name'] = containerName
         return containerTemplate
     }
@@ -47,12 +46,13 @@ class Utils {
         return new JsonSlurper().parseText(JsonOutput.toJson(originalMap))
     }
 
-    public static final Map removeUnmergable(Map m) {
-        m.remove('names')
-        m.remove('tag')
-        m.remove('_inherit')
-        m.remove('env')
-        m.remove('vol')
+    public static final Map removeUnmergable(Map m, List preserve = []) {
+        List toRemove = ["names", "tag","_inherit", "env", "vol"]
+        toRemove.each { it ->
+            if (!preserve.contains(it)) {
+                m.remove(it)
+            }
+        }
         return m
     }
 

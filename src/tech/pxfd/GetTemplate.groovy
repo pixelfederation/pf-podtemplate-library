@@ -170,7 +170,7 @@ class GetTemplate {
         String name = containerParams["_inherit"]
         Map cloneDef = Utils.mapDeepCopy(containersFinalDef[name])
         cloneDef["name"] = containerName
-        cloneDef = Utils.removeUnmergable(cloneDef)
+        cloneDef = Utils.removeUnmergable(cloneDef,["env"])
         podTemplate['spec']['containers'] +=  Utils.mapDeepCopy(cloneDef)
         containersFinalDef[containerName] =  Utils.mapDeepCopy(cloneDef)
         podTemplate['spec']['containers'] = podTemplate['spec']['containers'].findAll { it.name != name }
