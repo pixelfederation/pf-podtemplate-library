@@ -86,11 +86,11 @@ class Utils {
         return (new ConfigSlurper().parse(tmpProps))
     }
 
-    public static final checkOutFrom(repo = "", String branch = "main" ) {
+    public checkOutFrom(repo = "", String branch = "main" ) {
     //def tempDir = sh(script: 'mktemp -d', returnStdout: true).trim()
     //https://github.com/kiegroup/jenkins-pipeline-shared-libraries/blob/main/vars/githubscm.groovy#L39
     //git url: "git@github.com:jenkinsci/${repo}"
-        return sh(script: 'pwd', returnStdout: true).trim()
+        return this.context.sh(script: 'pwd && ls -la', returnStdout: true).trim()
     }
 }
 
