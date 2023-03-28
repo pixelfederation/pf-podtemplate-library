@@ -69,9 +69,13 @@ class GetTemplate {
                 baseResourceFromLibTemplate["image"] = baseResourceFromLibTemplate["image"].split(":")[0] + ":" + value
                 break
                 case "names":
-                value.each{ String cname ->
-                    clones[cname] = [:]
-                    clones[cname]["_inherit"] = containerName
+                if ( value instanceof List ) {
+                    value.each{ String cname ->
+                        clones[cname] = [:]
+                        clones[cname]["_inherit"] = containerName
+                    }
+                } else {
+                    utils.error("`names` must be a list")
                 }
                 break
                 case "env":
