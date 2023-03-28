@@ -69,9 +69,13 @@ class GetTemplate {
                 baseResourceFromLibTemplate["image"] = baseResourceFromLibTemplate["image"].split(":")[0] + ":" + value
                 break
                 case "names":
-                value.each{ String cname ->
-                    clones[cname] = [:]
-                    clones[cname]["_inherit"] = containerName
+                if ( value instanceof List ) {
+                    value.each{ String cname ->
+                        clones[cname] = [:]
+                        clones[cname]["_inherit"] = containerName
+                    }
+                } else {
+                    utils.error("`names` must be a list")
                 }
                 break
                 case "env":
@@ -170,7 +174,7 @@ class GetTemplate {
         String name = containerParams["_inherit"]
         Map cloneDef = Utils.mapDeepCopy(containersFinalDef[name])
         cloneDef["name"] = containerName
-        cloneDef = Utils.removeUnmergable(cloneDef)
+        cloneDef = Utils.removeUnmergable(cloneDef,["env"])
         podTemplate['spec']['containers'] +=  Utils.mapDeepCopy(cloneDef)
         containersFinalDef[containerName] =  Utils.mapDeepCopy(cloneDef)
         podTemplate['spec']['containers'] = podTemplate['spec']['containers'].findAll { it.name != name }
