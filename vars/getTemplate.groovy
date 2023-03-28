@@ -28,6 +28,16 @@ String Util(Map conatinersConf = [:], Map podConf = [:]) {
   return template.render()
 }
 
+String UtilPhp(Map conatinersConf = [:], Map podConf = [:]) {
+  // just define keys, props are from resources/container/{key} templates
+  conatinersConf['jnlp'] = [:]
+  conatinersConf['util'] = [:]
+  conatinersConf['php'] = [:]
+
+  def template = new GetTemplate(this, conatinersConf, podConf)
+  return template.render()
+}
+
 String UtilKaniko(Map conatinersConf = [:], Map podConf = [:]) {
   // just define keys, props are from resources/container/{key} templates
   conatinersConf['jnlp'] = [:]

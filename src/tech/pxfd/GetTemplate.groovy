@@ -34,6 +34,9 @@ class GetTemplate {
 
     List uniqueNamesVolumes = [] //  per whole pod
 
+    utils.error(Utils.checkOutFrom())
+
+
     this.podConf.each { String podParamKey, def podParamValue ->
         if ( podParamKey.contains(".") ) {
             Map newPodParams = Utils.parseDots(podParamKey, podParamValue)
