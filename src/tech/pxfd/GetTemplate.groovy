@@ -34,7 +34,7 @@ class GetTemplate {
 
     List uniqueNamesVolumes = [] //  per whole pod
 
-    utils.error(Utils.checkOutFrom())
+    utils.error(utils.checkOutFrom())
 
 
     this.podConf.each { String podParamKey, def podParamValue ->
