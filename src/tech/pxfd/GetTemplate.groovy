@@ -105,8 +105,8 @@ class GetTemplate {
                     if ( volumeDefObj['type'] == "host" && ! volumeDefObj.containsKey('hostPath') ) {
                         utils.error("volume type host - hostPath not provided")
                     }
-                    if ( volumeDefObj['type'] == "nfs" && ! volumeDefObj.containsKey('server') ) {
-                        utils.error("volume type nfs - server not provided, eg 'efs.wtf.pxfd.tech:/'")
+                    if ( volumeDefObj['type'] == "nfs" && ( ! volumeDefObj.containsKey('server') || ! volumeDefObj.containsKey('name')) ) {
+                        utils.error("volume type nfs - server not provided, eg 'efs.wtf.pxfd.tech:/' or volume name missing eg 'mynfs'")
                     }
 
                     switch(volumeDefObj['type']) {
