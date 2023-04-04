@@ -1,5 +1,8 @@
 # Changelog
 
+## [v0.5.1 - 2023-04-04]
+- bump newman container image
+
 ## [v0.5.0 - 2023-03-27]
 - add Pod override
 - add default container template
