@@ -1,5 +1,8 @@
 # Changelog
 
+## [v0.5.2 - 2023-04-18]
+- migrate gh-release workflows
+
 ## [v0.5.1 - 2023-04-04]
 - bump newman container image
 
