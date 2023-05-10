@@ -1,5 +1,8 @@
 # Changelog
 
+## [v0.5.3 - 2023-05-10]
+- util bump to 3.0.1
+
 ## [v0.5.2 - 2023-04-18]
 - migrate gh-release workflows
 
