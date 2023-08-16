@@ -1,5 +1,8 @@
 # Changelog
 
+## [v0.5.4 - 2023-08-16]
+- util bump to 3.0.7
+
 ## [v0.5.3 - 2023-05-10]
 - util bump to 3.0.1
 
