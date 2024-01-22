@@ -1,5 +1,5 @@
 name: jnlp
-image: jenkins/inbound-agent:4.11-1
+image: jenkins/inbound-agent:3206.vb_15dcf73f6a_9-3-jdk21
 imagePullPolicy: IfNotPresent
 resources:
   limits: {}
