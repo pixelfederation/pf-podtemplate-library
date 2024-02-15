@@ -1,4 +1,6 @@
 # Changelog
+## [v0.5.6 - 2024-02-15]
+- util bump to v3.0.9
 
 ## [v0.5.5 - 2024-01-22]
 - jnlp bump to 3206.vb_15dcf73f6a_9-3-jdk21
