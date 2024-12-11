@@ -1,4 +1,7 @@
 # Changelog
+## [v0.5.7 - 2024-12-11]
+- util bump to v3.0.12
+
 ## [v0.5.6 - 2024-02-15]
 - util bump to v3.0.9
 
