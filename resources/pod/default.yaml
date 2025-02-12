@@ -6,6 +6,7 @@ metadata:
   labels:
     jenkins: "slave"
 spec:
+  schedulerName: mostallocated-scheduler
   containers: []
   nodeSelector:
     dedicated: "jenkins"
