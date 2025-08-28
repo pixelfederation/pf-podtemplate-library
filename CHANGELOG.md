@@ -1,4 +1,7 @@
 # Changelog
+## [v0.8.0 - 2025-08-28]
+- util bump to v4.0.0 - bump all tools
+
 ## [v0.6.0 - 2025-02-12]
 - add `mostallocated-scheduler` scheduler to jnlp pod
 - bump jnlp to 3261.v9c670a_4748a_9-8-jdk21
