@@ -1,4 +1,7 @@
 # Changelog
+## [v0.8.0 - 2025-09-01]
+- util bump to v4.1.0 - bump all tools
+
 ## [v0.8.0 - 2025-08-28]
 - util bump to v4.0.0 - bump all tools
 
