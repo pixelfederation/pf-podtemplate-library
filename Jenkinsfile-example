@@ -179,3 +179,6 @@ getTemplate.UtilBuildxPhp([:], ['spec': ['nodeSelector': ['foo' : 'bar', 'dedica
 
 //ADD UTIL AND MULTIPLE SAME KANIKO CONTAINERS WITH DIFERENT NAMES, REMOVE EXISTING SELECTOR, ADD NEW SELECTOR, CHANGE SERVICE ACCOUNT
 getTemplate.Jnlp('util': [:], 'kaniko': [names: ["k1", "k2"]], ['spec.nodeSelector.dedicated' : null , 'spec.nodeSelector.foo': 'bar' , 'spec.serviceAccountName' : 'foobar' ])
+
+//SELECT ARM64 ARCH
+String podTemplateYaml = getTemplate.UtilBuildx([:], ["spec":["nodeSelector": ["dedicated":"jenkins-arm64"], "tolerations": [[effect: "NoSchedule", key: "dedicated", value: "jenkins-arm64"]]]])
