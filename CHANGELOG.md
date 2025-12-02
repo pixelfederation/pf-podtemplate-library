@@ -1,4 +1,7 @@
 # Changelog
+## [v0.8.2 - 2025-12-01]
+- update buildx image to multiarch
+
 ## [v0.8.1 - 2025-09-01]
 - util bump to v4.1.0 - bump all tools
 
