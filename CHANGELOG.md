@@ -1,4 +1,7 @@
 # Changelog
+## [v0.8.3 - 2025-12-03]
+- bump util image
+
 ## [v0.8.2 - 2025-12-01]
 - update buildx image to multiarch
 
