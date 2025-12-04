@@ -1,4 +1,7 @@
 # Changelog
+## [v0.8.4 - 2025-12-04]
+- bump util image to v4.2.0
+
 ## [v0.8.3 - 2025-12-03]
 - bump util image
 
