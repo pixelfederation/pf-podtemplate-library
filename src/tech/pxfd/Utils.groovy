@@ -42,6 +42,7 @@ class Utils {
             this.context.error("ERROR " + msg)
     }
 
+    @NonCPS
     public static final Map mapDeepCopy(Map originalMap) {
         return new JsonSlurper().parseText(JsonOutput.toJson(originalMap))
     }
