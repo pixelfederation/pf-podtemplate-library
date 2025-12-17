@@ -1,4 +1,7 @@
 # Changelog
+## [v0.8.5 - 2025-12-17]
+- Deep copy Map parameters in GetTemplate constructor
+
 ## [v0.8.4 - 2025-12-04]
 - bump util image to v4.2.0
 
