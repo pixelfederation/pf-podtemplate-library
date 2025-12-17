@@ -15,8 +15,8 @@ class GetTemplate {
   GetTemplate(def context, Map conatinersConf, Map podConf) {
     this.context = context
 
-    this.conatinersConf = conatinersConf
-    this.podConf = podConf
+    this.conatinersConf = Utils.mapDeepCopy(conatinersConf)
+    this.podConf = Utils.mapDeepCopy(podConf)
   }
 
   String render() {
