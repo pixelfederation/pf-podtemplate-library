@@ -1,5 +1,5 @@
 name: newman
-image: postman/newman
+image: postman/newman:latest
 imagePullPolicy: IfNotPresent
 command:
 - /bin/cat

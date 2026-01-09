@@ -1,4 +1,7 @@
 # Changelog
+## [v0.8.6 - 2026-01-09]
+- Set latest tag to newman container
+
 ## [v0.8.5 - 2025-12-17]
 - Deep copy Map parameters in GetTemplate constructor
 
