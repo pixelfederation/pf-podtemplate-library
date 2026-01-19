@@ -5,6 +5,8 @@ env:
   value: "https://vault.kube.shared.pxfd.tech"
 - name: "KUBE_CLUSTER"
   value: "pxfd-shared-eks"
+- name: "PHP_JENKINS_ENV"
+  value: "true"
 imagePullPolicy: "IfNotPresent"
 resources:
   limits: {}
