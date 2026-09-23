@@ -1,4 +1,7 @@
 # Changelog
+## [v0.8.7 - 2026-09-23]
+- GetTemplate constructor accepts null containersConf/podConf (defaults to empty map)
+
 ## [v0.8.6 - 2026-01-09]
 - Set latest tag to newman container
 

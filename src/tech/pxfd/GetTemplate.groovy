@@ -15,8 +15,9 @@ class GetTemplate {
   GetTemplate(def context, Map conatinersConf, Map podConf) {
     this.context = context
 
-    this.conatinersConf = Utils.mapDeepCopy(conatinersConf)
-    this.podConf = Utils.mapDeepCopy(podConf)
+    // tolerate explicit null (eg. missing pf-config key passed straight through)
+    this.conatinersConf = Utils.mapDeepCopy(conatinersConf ?: [:])
+    this.podConf = Utils.mapDeepCopy(podConf ?: [:])
   }
 
   String render() {
