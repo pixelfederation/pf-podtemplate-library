@@ -1,4 +1,7 @@
 # Changelog
+## [v0.8.8 - 2026-09-29]
+- buildx container: add `docker info` startupProbe so builds wait for the dind daemon (fixes intermittent "Cannot connect to the Docker daemon" in buildx prepare)
+
 ## [v0.8.7 - 2026-09-23]
 - GetTemplate constructor accepts null containersConf/podConf (defaults to empty map)
 
