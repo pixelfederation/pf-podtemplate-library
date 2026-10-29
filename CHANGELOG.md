@@ -1,4 +1,7 @@
 # Changelog
+## [v0.8.9 - 2026-10-29]
+- Bump util image to v4.3.0
+
 ## [v0.8.8 - 2026-09-29]
 - buildx container: add `docker info` startupProbe so builds wait for the dind daemon (fixes intermittent "Cannot connect to the Docker daemon" in buildx prepare)
 
