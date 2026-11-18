@@ -1,4 +1,7 @@
 # Changelog
+## [v0.9.0 - 2026-11-18]
+- Bump util image to v4.6.0 - dvc 3.62.0 -> 3.67.1
+
 ## [v0.8.12 - 2026-11-18]
 - jnlp: mitigate CVE-2026-114938 (Java4Shell) - set `JAVA_TOOL_OPTIONS=-XX:-UseBASE64Intrinsics`
 
