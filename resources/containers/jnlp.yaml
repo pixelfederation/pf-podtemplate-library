@@ -1,5 +1,10 @@
 name: jnlp
 image: jenkins/inbound-agent:3261.v9c670a_4748a_9-8-jdk21
+# CVE-2026-114938 (Java4Shell) mitigation; JAVA_TOOL_OPTIONS (not JAVA_OPTS) so it applies to every JVM in this
+# container. Keep it on jnlp only: JDK 8 images refuse to start with this flag. Remove after patched JDK.
+env:
+- name: "JAVA_TOOL_OPTIONS"
+  value: "-XX:-UseBASE64Intrinsics"
 imagePullPolicy: IfNotPresent
 resources:
   limits: {}

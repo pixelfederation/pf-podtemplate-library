@@ -1,4 +1,7 @@
 # Changelog
+## [v0.8.12 - 2026-11-18]
+- jnlp: mitigate CVE-2026-114938 (Java4Shell) - set `JAVA_TOOL_OPTIONS=-XX:-UseBASE64Intrinsics`
+
 ## [v0.8.11 - 2026-11-10]
 - Bump util image to v4.5.0
 
